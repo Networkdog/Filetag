@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <title><%=appIdentity%> - confirmation code</title>
+    <style>
+        body {
+            font-family: "Segoe UI Light", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            background-color: #ffffff;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <span style="font-size: 40px">file<b>tag</b></span>
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+        <tr>
+            <td width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" align="center" style="width: 720px">
+                    <tr>
+                        <td width="720px" style="font-size: 16px; text-align: left; margin-top: 20px; margin-bottom: 20px">
+                            We noticed that there was an attempt to sign in to your <%=appIdentity%> account. If you were prompted for a verification code, please enter the following to complete your sign-in. Once you sign in, you can download the files through a web browser.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="720px" style="font-size: 65px; text-align: center; background-color: #eaeaea; letter-spacing: 20px; padding-top: 40px; ">
+                            <%=signincode%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="720px" style="font-size: 16px; text-align: center; background-color: #eaeaea; color: red; padding-bottom: 40px; ">
+                            NOTE: The code will expire in 5 minutes, and can only be used one time
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="720px" style="font-size: 16px; text-align: left; margin-top: 20px">
+                            This email contains private information for your <%=appIdentity%> account - please don't forward it. Questions about using <%=appIdentity%>? Email us at <a href="mailto:<%=emailFeedback%>"><%=emailFeedback%></a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+

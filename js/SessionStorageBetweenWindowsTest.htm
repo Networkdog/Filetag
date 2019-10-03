@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+</head>
+<body>
+	<div id="result"></div>
+	<button id="btnset" onclick="clickset();">SET</a> 
+	<button id="btnclear" onclick="clickclear();">CLEAR</a> 
+	<button id="btnpopup" onclick="clickpopup();">POPUP</a> 
+	<form id="formpopup" action="SessionStorageBetweenWindowsChild.htm" target="test"></form>
+	<script>
+		var btnpopup = document.getElementById("btnpopup");
+		var formpopup = document.getElementById("formpopup");
+		var divresult = document.getElementById("result");
+		divresult.innerHTML = sessionStorage.getItem("logintime");
+		function clickpopup(e) {
+			window.open("", "test");
+			formpopup.submit();
+		}
+		function clickset(e) {
+			sessionStorage.setItem("logintime", Date.now());
+			divresult.innerHTML = sessionStorage.getItem("logintime");
+		}
+		function clickclear(e) {
+			sessionStorage.clear();
+			divresult.innerHTML = sessionStorage.getItem("logintime");
+		}
+	</script>
+</body>
+</html>

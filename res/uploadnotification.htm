@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <title><%=appIdentity%>: files have been uploaded to <%=email%></title>
+    <style>
+        body {
+            font-family: "Segoe UI Light", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            background-color: #ffffff;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            list-style-type: none;
+        }
+
+        li {
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .item-file {
+        }
+
+        .file-name {
+            display: block;
+            font-size: 30px;
+        }
+
+        .file-length {
+            font-size: 14px;
+        }
+
+        .file-date {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <span style="font-size: 40px">file<b>tag</b></span>
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+        <tr>
+            <td width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" align="center" style="width: 750px">
+                    <tr>
+                        <td width="750px" style="font-size: 15px; text-align: left; margin-top: 20px; margin-bottom: 20px">The following files have been uploaded.</td>
+                    </tr>
+                    <tr>
+                        <td width="750px" style="font-size: 15px; text-align: center; background-color: #f0f0f0; padding-top: 30px; padding-bottom: 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+                                <% shortcutlist.forEach(function(row) { %>
+                                <tr style="padding-top: 5px"><td><a href="<%=row.uri%>" target="_blank" style="font-size: 30px; display: block;"><%=row.name%></a></td></tr>
+                                <tr style="padding-bottom: 5px"><td><span style="font-size: 12px;"><%=row.contentlength%></span><span style="font-size: 14px; padding-left: 10px;"><%=row.createddate%></span></td></tr>
+                                <% }); %>
+                            </table>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="720px" style="font-size: 16px; text-align: left; margin-top: 20px">
+                            This email contains private information for your <%=appIdentity%> account - please don't forward it. Questions about using <%=appIdentity%>? Email us at <a href="mailto:<%=emailFeedback%>"><%=emailFeedback%></a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

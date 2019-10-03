@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+
+<head>
+    <style>
+        body {
+            height: 100%;
+            margin: 0 0 0 0;
+            poadding: 0 0 0 0;
+            background-color: #ffffff;
+        }
+
+        .layout-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: $ffffa0;
+        }
+
+        .layout-header {
+            display: block;
+			position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            height: 50px;
+        }
+		
+		.panel-container {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			background-color: red;
+		}
+
+        .layout-body {}
+
+        .content-container {
+			position: relative;
+			width: 100%;
+			height: 100vh;
+			display: block;
+			overflow-y: hidden;
+		}
+
+        .content1 {
+            -background-image: url("background1.jpg");
+        }
+
+        .content2 {
+            -background-image: url("background2.jpg");
+        }
+
+        .content3 {
+            -background-image: url("background3.jpg");
+        }
+
+        .content-outer {
+            position: relative;
+			height: 100vh;
+			background-color: #ffffff;
+        }
+
+        .content-inner {
+            position: absolute;
+            min-width: 600px;
+            min-height: 600px;
+            top: 50px;
+            right: 50px;
+            bottom: 50px;
+            left: 50px;
+            background: #fafafa; /* Old browsers */
+            background: -moz-linear-gradient(top, #fafafa 0%, #f5f5f5 51%, #e9e9e9 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, #fafafa 0%,#f5f5f5 51%,#e9e9e9 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, #fafafa 0%,#f5f5f5 51%,#e9e9e9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#e9e9e9',GradientType=0 );
+        }
+
+        /*
+            
+            #E9E9E9
+            #FAFAFA
+
+        */
+    </style>
+</head>
+
+<body>
+    <div class="layout-container">
+		<div class="layout-header">
+			<div class="panel-container">
+			</div>
+		</div>
+        <div class="layout-body">
+            <div id="content-entire" class="content-container">
+                <div class="content-outer">
+					<div id="dropzone" class="content-inner content1"></div>
+                </div>
+                <div class="content-outer">
+					<div class="content-inner content2"></div>
+                </div>
+                <div class="content-outer">
+					<div class="content-inner content3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/js/flow.js"></script>
+    <script>
+        var autoScrollHandler = function(e) {
+            var _this, delta, horizontalDetection, isScrollingVertically, value;
+            _this = this;
+            e = e.originalEvent;
+            if (typeof e.wheelDelta !== 'undefined') {
+                value = e.wheelDelta;
+                // browser is 'webkit';
+            } else if (typeof e.detail !== 'undefined') {
+                value = -e.detail;
+                // browser is 'firefox';
+            }
+            delta = Math.max(-1, Math.min(1, value));
+            
+			/*
+			if (_this.scrollings.length > 149) {
+                _this.scrollings.shift();
+            }
+			
+            _this.scrollings.push(Math.abs(value));
+			*/
+			
+            //horizontalDetection = typeof e.wheelDeltaX !== 'undefined' || typeof e.deltaX !== 'undefined';
+            
+			isScrollingVertically = Math.abs(e.wheelDeltaX) < Math.abs(e.wheelDelta) || Math.abs(e.deltaX) < Math.abs(e.deltaY) || !horizontalDetection;
+            
+			if (isScrollingVertically) {
+                
+				var h = $(".content-outer").height();
+				
+				if (delta < 0) {
+					$(".content-container").animate({scrollTop: h});
+					console.log("wheel down");
+					
+				} else {
+					console.log("wheel up");
+				}
+                
+            }
+        };
+        /*
+        $(window).on("DOMMouseScroll.content-container mousewheel.content-container", function(e) {
+			autoScrollHandler(e);
+        });
+        */
+
+
+        
+
+        function getTicket(callback) {
+
+            var timestamp = new Date().toTimeString();
+
+            $.ajax({
+                url: '/@ticket?t=' +  timestamp,
+                method: 'get',
+                cache: false
+            }).done(function (res) {
+                var regexValidateGuid = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/gi;
+
+                if (regexValidateGuid.test(res) === true) {
+                    console.log('valid ticket: %s', res);
+                    if (typeof callback === 'function') callback.call(this, res);
+                }
+                else {
+                    console.error('invalid ticket: %s', res);
+                }
+                
+               });
+
+            return;
+
+        }
+
+        $(document).ready(function () {
+
+            var uri = location.href;
+
+            var flow = new Flow({
+                target: uri,
+                query: {
+                    upload_token: 'rasupload'
+                },
+                chunkSize: 16 * 1024 * 1024,
+                testChunks: false
+            });
+
+            getTicket(function (guid) {
+                flow.opts.query.sid = guid; //slot id
+            });
+
+            if (!flow.support) {
+                console.log('Flow.js isn\'t support');
+            }
+            else {
+                flow.assignDrop($('#dropzone')[0]);
+            }
+
+            flow.on('fileAdded', function (file, event) {
+                console.log(file, event);
+            });
+
+            flow.on('filesSubmitted', function (file) {
+                console.log("File was submitted. Starting to upload.");
+                
+                getTicket(function (guid) {
+                    flow.opts.query.tlen = flow.files.length;
+                    flow.opts.query.tid = guid; //transaction id
+                    flow.upload();
+                });
+            });
+
+            flow.on('fileSuccess', function (file, message) {
+                console.log(file, message);
+            });
+
+            flow.on('fileError', function (file, message) {
+                console.log(file, message);
+            });
+
+            flow.on("complete", function () {
+                console.log("The upload has completed");
+                flow.cancel();
+            });
+
+            flow.on("fileError", function (file, message) {
+                console.log("The upload has failed");
+                flow.cancel();
+            });
+
+            flow.on('catchAll', function () {
+                console.log.apply(console, arguments);
+            });
+
+            flow.on('fileProgress', function (file, chunk) {
+                console.log('file: %s (%s)', file.name, (chunk.endByte / chunk.fileObj.size * 100).toFixed(2));
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>

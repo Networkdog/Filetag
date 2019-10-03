@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="/css/raspocket.css" />
+</head>
+
+<body class="layout-container">
+    <div class="layout-header">
+        <div class="panel-top">
+            <span class="top-home font-home">
+                <a id="link-home" href="/">file<b>tag</b></a>
+            </span>
+            <span class="top-bar font-top">
+                <a id="link-signin" href="#" class="display-none">SIGN IN</a>
+                <a id="link-signout" href="#" class="display-none">SIGN OUT</a>
+            </span>
+        </div>
+    </div>
+    <div class="layout-body background-gradient panel-drop">
+        <div class="pane-container">
+            <!--
+            <div class="layer-tag">
+                <div class="pane-tag">
+                    <%=email%>
+                </div>
+            </div>
+                -->
+            <div class="pane-center scene-choose scene-upload scene-complete">
+                <div id="chart-background" class="layer-background scene-choose scene-upload scene-complete"></div>
+                <div id="chart-foreground" class="layer-background scene-choose scene-upload scene-complete"></div>
+            </div>
+            <div class="pane-center scene-choose scene-upload scene-complete scene-signin">
+                <div class="layer-body scene-choose display-invisible">
+                    <div class="pane-band wide-margin font-header">
+                        <a id="button-browse1" class="button-browse" href="#">CHOOSE FILES</a> OR DRAG THEM HERE</div>
+                    <div class="pane-band normal-margin font-body">then your files will be delivered to
+                        <a href="/">
+                            <%=email%>
+                        </a>
+                    </div>
+                </div>
+                <div class="layer-body scene-upload display-invisible">
+                    <div id="upload-rate" class="pane-band wide-margin font-title">0%</div>
+                    <div id="estimated-time" class="pane-band wide-margin font-subtitle"></div>
+                    <div class="pane-band normal-margin font-body">You can still
+                        <a id="button-browse2" class="button-browse" href="#">choose files</a> or drag them here</div>
+                </div>
+                <div class="layer-body scene-complete display-invisible">
+                    <div class="pane-band normal-margin font-subtitle">Your upload completed successfully, we've sent a notification mail to
+                        <a href="mailto:<%=email%>">
+                            <%=email%>
+                        </a>
+                    </div>
+                    <div class="pane-band normal-margin font-body">You can still
+                        <a id="button-browse3" class="button-browse" href="#">choose files</a> or drag them here</div>
+                </div>
+                <div class="layer-body scene-signin display-invisible">
+                    <div class="pane-band wide-margin font-body">We've emailed the 6-digit authentication code to
+                        <%=email%>. To sign in, enter the code.</div>
+                    <div class="pane-digitcode"></div>
+                </div>
+            </div>
+            <div class="pane-top scene-sendto display-invisible">
+                <div class="layer-body theater-mode scene-sendto display-invisible">
+                    <div class="pane-band vast-margin font-header theater-mode">The easiest way to store and send files to someone</div>
+                    <div class="pane-band vast-margin font-body theater-mode">for business and private users, allowing you to upload, send and access your files from anywhere in a
+                        simple and fast way</div>
+                </div>
+            </div>
+            <div class="pane-bottom scene-sendto display-invisible">
+                <div class="layer-body scene-sendto display-invisible">
+                    <div class="pane-band wide-margin font-body">Who are you going to send files to?</div>
+                    <input type="text" id="input-sendto" class="input-sendto" placeholder="someone@example.com" />
+                    <div id="recipient-history" class="pane-band wide-margin font-body"></div>
+                </div>
+            </div>
+            <div class="layer-body scene-browse display-invisible">
+                <div class="pane-browser">
+                    <ul id="list-files"></ul>
+                </div>
+            </div>
+            <div class="layer-header display-invisible" id="notification-bar">
+                <span class="notification-message" id="text-console"></span>
+            </div>
+        </div>
+    </div>
+    <div class="layout-footer">
+    </div>
+    <script>
+        var __sessionid = '<%=sessionid%>';
+        var __recipient = '<%=email%>';
+        var __isactivated = <%=isactivated%>;
+    </script>
+    <script src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/js/progressbar.min.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/filesize.min.js"></script>
+    <script src="/js/flow.js"></script>
+    <script src="/js/lang-kr.js"></script>
+    <script src="/js/filetag.js"></script>
+    <script src='/js/main.js'></script>
+</body>
+
+</html>
