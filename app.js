@@ -1,4 +1,11 @@
-﻿'use strict';
+﻿"use strict";
+const { DefaultAzureCredential } = require("@azure/identity");
+const { SecretClient } = require("@azure/keyvault-secrets");
+const credential = new DefaultAzureCredential();
+const vaultName = "kv-filetag-keys";
+const vaulturl = "https://" + vaultName + ".vault.azure.net";
+const client = new SecretClient(vaulturl, credential);
+
 var debug = require('debug');
 var express = require('express');
 var path = require('path');
@@ -37,19 +44,25 @@ var directories;
 const USERID_ANONYMOUS = '00000000-0000-0001-0005-000000000007';
 
 var config = {
+    keyvault: {
+        resource: "kv-filetag-keys",
+        secrets: {
+            sendgrid: "filetag-sendgrid-notification-api-key"
+        }
+    },
     key: {
-        sendgrid: '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'
+        sendgrid: ''
     },
     mail: {
-        sender: 'no-reply@filetag.net',
-        feedback: 'feedback@filetag.net'
+        sender: 'no-reply@filetag.online',
+        feedback: 'feedback@filetag.online'
     },
     url: {
-        entry: 'http://filetag.net',
+        entry: 'http://filetag.online',
         mongodb: 'mongodb://localhost:27017'
     },
     identity: {
-        appname: 'filetag.net'
+        appname: 'filetag.online'
     },
     path: {
         approot: process.cwd(),
@@ -67,7 +80,7 @@ var config = {
         //uploaded: path.join(root, 'uploads/')
     },
     db: {
-        name: 'raspocket2'
+        name: 'filetag'
     }
 
 };
@@ -502,7 +515,7 @@ function onRequestGetUpload(req, res) {
 
 }
 
-var initialize = function () {
+var run = async function () {
 
     config.key.sendgrid = process.env.SENDGRID_API_KEY || config.key.sendgrid;
 
@@ -558,32 +571,32 @@ var initialize = function () {
     */
 
     var onCompleteConnectingDatabase = function (err, client) {
-        assert.equal(null, err);
+        assert.strictEqual(null, err);
         console.log('mongodb database - connected successfully.');
         context.db = client.db(config.db.name);
         users = new Users(config, context, onCompleteInitializingUsers);
     };
 
     var onCompleteInitializingUsers = function (err) {
-        assert.equal(null, err);
+        assert.strictEqual(null, err);
         console.log('users collection - synchronized successfully.');
         accounts = new Accounts(config, context, onCompleteInitializingAccount);
     };
 
     var onCompleteInitializingAccount = function (err) {
-        assert.equal(null, err);
+        assert.strictEqual(null, err);
         console.log('accounts collection - synchronized successfully.');
         shortcuts = new Shortcuts(config, context, onCompleteInitializingShortcuts);
     };
 
     var onCompleteInitializingShortcuts = function (err) {
-        assert.equal(null, err);
+        assert.strictEqual(null, err);
         console.log('shortcuts collection - synchronized successfully.');
         directories = new Directories(config, context, onCompleteInitializingDirectories);
     };
 
     var onCompleteInitializingDirectories = function (err) {
-        assert.equal(null, err);
+        assert.strictEqual(null, err);
         console.log('directories collection - synchronized successfully.');
         var server = app.listen(app.get('port'), function () {
             console.log('Express server listening on port ' + server.address().port);
@@ -708,8 +721,17 @@ var SendGridClient = {
     }
 };
 
-(function main() {
+async function initialize() {
 
-    initialize();
+    let sendgridApiKey = await client.getSecret(config.keyvault.secrets.sendgrid);
+    console.log("sendgrid-api-key: ", sendgridApiKey);
+    config.key.sendgrid = sendgridApiKey;
+
+}
+
+(async function main() {
+
+    await initialize();
+    run();
 
 })();
