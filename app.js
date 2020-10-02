@@ -31,6 +31,8 @@ var moment = require('moment');
 var zip = require('express-zip');
 var filesize = require('filesize');
 
+require('dotenv').config();
+
 var Users = require('./res/users.js');
 var Accounts = require('./res/accounts.js');
 var Shortcuts = require('./res/shortcuts.js');
@@ -40,6 +42,8 @@ var users;
 var accounts;
 var shortcuts;
 var directories;
+
+
 
 const USERID_ANONYMOUS = '00000000-0000-0001-0005-000000000007';
 
