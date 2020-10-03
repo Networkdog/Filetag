@@ -12,7 +12,7 @@
   "dependencies": {
     "@azure/identity": "^1.1.0",
     "@azure/keyvault-secrets": "^4.1.0",
-    "@sendgrid/mail": "^6.2.1",
+    "@sendgrid/mail": "^6.5.5",
     "body-parser": "^1.15.0",
     "connect-multiparty": "^2.1.0",
     "cookie-parser": "^1.4.0",

@@ -727,9 +727,9 @@ var SendGridClient = {
 
 async function initialize() {
 
-    let sendgridApiKey = await client.getSecret(config.keyvault.secrets.sendgrid);
-    console.log("sendgrid-api-key: ", sendgridApiKey);
-    config.key.sendgrid = sendgridApiKey;
+    // let sendgridApiKey = await client.getSecret(config.keyvault.secrets.sendgrid);
+    // console.log("sendgrid-api-key: ", sendgridApiKey);
+    // config.key.sendgrid = sendgridApiKey.value;
 
 }
 
