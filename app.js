@@ -225,7 +225,7 @@ var handlers = {
                 sessionid: utilities.generateId(),
                 isactivated: account.isActivated()
             }, function (html) {
-                res.send(html);
+                res.status(200).send(html);
             });
 
         }
