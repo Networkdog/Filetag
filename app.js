@@ -170,7 +170,15 @@ var handlers = {
     }, 
 
     browse: function (req, res) {
-        var signinkey = req.cookies.k ? utilities.getKeyFromString(req.cookies.k) : "";
+        
+        if (!req.cookies.k) {
+
+            res.status(200).send('no credential');
+            return;
+
+        }
+        
+        var signinkey = utilities.getKeyFromString(req.cookies.k);
         var email = utilities.getEmailFromString(req.params.email);
         var account = accounts.get(email);
 

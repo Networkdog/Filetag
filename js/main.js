@@ -309,7 +309,10 @@ $(document).ready(function () {
     var browse = function (callback) {
         filetag.files.browse(__recipient, function (result) {
             if (typeof callback === 'function') {
-                if (typeof result !== 'object') return;
+                if (typeof result !== 'object') {
+                    setSignInLink(false);
+                    return;
+                }
                 result.sort(function (a, b) {
                     return new Date(b.createddate) - new Date(a.createddate);
                 });
