@@ -62,7 +62,6 @@ var config = {
         feedback: 'feedback@filetag.online'
     },
     url: {
-        entry: '//filetag.online',
         mongodb: 'mongodb://localhost:27017'
     },
     identity: {
@@ -641,8 +640,9 @@ function generateZipFileName(email) {
 function notify_uploadCompletion(account, sid, context) {
 
     var email = account.email;
+    var host = "//" + context.host;
     //var filehtml = '<ul>';
-    var confirmurl = url.resolve(config.url.entry, 'a/' + account.activationkey);
+    var confirmurl = url.resolve(host, 'a/' + account.activationkey);
     var msghtml = 'The following files have been uploaded. <a href="' + confirmurl + '">Just click on this link to browse following files</a>';
     var shortcutgroupbysid = shortcuts.getBySessionId(sid);
     var zipdestinations = '';
@@ -653,8 +653,6 @@ function notify_uploadCompletion(account, sid, context) {
     }
     
     var shortcutlist = [];
-    var host = "//" + context.host;
-
     for (let shortcutkey in shortcutgroupbysid) {
         let shortcut = shortcutgroupbysid[shortcutkey];
         let uri = url.resolve(host, 'd/' + shortcutkey);
