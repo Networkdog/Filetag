@@ -62,7 +62,7 @@ var config = {
         feedback: 'feedback@filetag.online'
     },
     url: {
-        entry: 'http://filetag.online',
+        entry: '//filetag.online',
         mongodb: 'mongodb://localhost:27017'
     },
     identity: {
@@ -181,6 +181,7 @@ var handlers = {
         var signinkey = utilities.getKeyFromString(req.cookies.k);
         var email = utilities.getEmailFromString(req.params.email);
         var account = accounts.get(email);
+        var host = req.headers.host;
 
         if (!account) {
             res.status(200).send('no account');
@@ -200,7 +201,7 @@ var handlers = {
 
         var result = Object.keys(assets).map(function (shortcutkey) {
             let shortcut = assets[shortcutkey];
-            let uri = url.resolve(config.url.entry, 'd/' + shortcutkey);
+            let uri = url.resolve(host, 'd/' + shortcutkey);
             return {
                 originalname: shortcut.originalname,
                 destination: uri,
@@ -488,7 +489,7 @@ function uploadFiles(req, res) {
                     flow.clean(identifier);
 
                     if (completeTransactionItem(tid)) {
-                        notify_uploadCompletion(account, sid);
+                        notify_uploadCompletion(account, sid, {host: req.headers.host});
                         renderCompletedUpload(directory, account);
                     }
 
@@ -637,7 +638,7 @@ function generateZipFileName(email) {
 
 }
 
-function notify_uploadCompletion(account, sid) {
+function notify_uploadCompletion(account, sid, context) {
 
     var email = account.email;
     //var filehtml = '<ul>';
@@ -652,10 +653,11 @@ function notify_uploadCompletion(account, sid) {
     }
     
     var shortcutlist = [];
+    var host = "//" + context.host;
 
     for (let shortcutkey in shortcutgroupbysid) {
         let shortcut = shortcutgroupbysid[shortcutkey];
-        let uri = url.resolve(config.url.entry, 'd/' + shortcutkey);
+        let uri = url.resolve(host, 'd/' + shortcutkey);
         if (shortcut.contenttype !== 'file') continue;
         if (zipdestinations !== '') zipdestinations += ';';
         zipdestinations += shortcut.destination;
@@ -678,7 +680,7 @@ function notify_uploadCompletion(account, sid) {
             sessionid: sid
         });
 
-        let zipuri = url.resolve(config.url.entry, 'd/' + shortcutforzip.shortcutkey);
+        let zipuri = url.resolve(host, 'd/' + shortcutforzip.shortcutkey);
 
         shortcutlist.push({
             uri: zipuri,
