@@ -26,7 +26,7 @@
     "guid": "0.0.12",
     "moment": "^2.22.1",
     "mongodb": "^3.6.2",
-    "pug": "^2.0.0-beta6",
+    "pug": "^3.0.1",
     "serve-favicon": "^2.3.0",
     "socket.io": "^2.1.1",
     "urlencode": "^1.1.0"
