@@ -24,7 +24,7 @@
     "extend": "^3.0.2",
     "filesize": "^3.6.1",
     "guid": "0.0.12",
-    "moment": "^2.22.1",
+    "moment": "^2.29.2",
     "mongodb": "^3.6.2",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.0",
